@@ -22,6 +22,8 @@ module Cct
         attr_reader :project
         attr_reader :network
         attr_reader :role
+        attr_reader :hypervisor
+        attr_reader :server
 
         # @param [Cct::Node] as the receiver for the openstack client
         def initialize node
@@ -30,6 +32,8 @@ module Cct
           @project = Openstack::Project.new(node)
           @network = Openstack::Network.new(node)
           @role = Openstack::Role.new(node)
+          @hypervisor = Openstack::Hypervisor.new(node)
+          @server= Openstack::Server.new(node)
         end
 
         def actions
@@ -112,9 +116,9 @@ module Cct
           end
         end
 
-        def show id_or_name
+        def show id_or_name, *options
           params.clear
-          OpenStruct.new(shell_parse(exec!("show", id_or_name, "--format=shell").output))
+          OpenStruct.new(shell_parse(exec!("show", id_or_name, options, "--format=shell").output))
         end
 
         def exist? id_or_name
@@ -222,4 +226,6 @@ require 'cct/commands/openstack/user'
 require 'cct/commands/openstack/project'
 require 'cct/commands/openstack/network'
 require 'cct/commands/openstack/role'
+require 'cct/commands/openstack/hypervisor'
+require 'cct/commands/openstack/server'
 
