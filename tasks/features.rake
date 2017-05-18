@@ -6,6 +6,7 @@ namespace :features do
     invoke_task "feature:users"
     invoke_task "feature:images"
     invoke_task "features:barclamps"
+	invoke_task "features:migration"
   end
 
   desc "Run functional client tests"

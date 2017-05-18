@@ -1,16 +1,20 @@
-Given(/^Hypervisors are available$/) do
+Given(/^At least (\d+) Xen Hypervisors are available$/) do |arg1|
+  # get hypervisors and count Xen's ones - for migration at least 2
+  hashypervisor_xen = 0
   @hypervisors = control_node.openstack.hypervisor.list 
   expect(@hypervisors).not_to be_empty
-end
 
-Given(/^Xen compute nodes are available$/) do
-  hashypervisor_xen = 0
-  # get hypervisors and count Xen's ones - for migration at least 2
   @hypervisors.each do |h| 
     hypervisor = control_node.openstack.hypervisor.show(h.id)
     hashypervisor_xen = (hashypervisor_xen + 1) if hypervisor.hypervisor_type == "Xen"
   end
-  hashypervisor_xen.should be > 0
+  expect(hashypervisor_xen).to be > arg1.to_i
+end
+
+Given(/^At least (\d+) Compute nodes must be enabled$/) do |arg1|
+  # get hypervisors and count Xen's ones - for migration we need 2
+    enabled_host_list = control_node.exec!("openstack host list -f value --zone nova").output
+  expect(enabled_host_list.each_line(separator=$/).to_a.count).to be >= arg1.to_i
 
 
 end
