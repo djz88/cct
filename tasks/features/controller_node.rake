@@ -4,9 +4,6 @@ namespace :feature do
   namespace :controller do
     desc "Essential system requirements"
     feature_task :system, tags: :@system
-	
-    desc "Test Xen migration"
-    feature_task :xen, tags: :@xen 
 
     feature_task :all
   end
