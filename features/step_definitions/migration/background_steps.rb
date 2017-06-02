@@ -7,9 +7,6 @@ end
 Given(/^Image is available$/) do
   # check image
   image_name   = "jeos"
-  images = control_node.openstack.image.list
-  images.each do |i|
-    @image_id   = i.id if i.name == image_name
-  end
-  expect(@image_id).not_to be_empty
+  images = images.find {|img| img.name == image_name}
+  expect(images).not_to be_empty
 end
